@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.aed3;
 
 import org.junit.Test;
 

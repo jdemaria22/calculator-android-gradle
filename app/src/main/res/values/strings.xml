@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">APP</string>
+    <string name="app_name">AhoRRap</string>
+    <string name="fecha_actual"></string>
+    <string name="boton_nuevo">Nuevo Ingreso</string>
+    <string name="boton_egreso">Nuevo Egreso</string>
+    <string name="boton_detalle">Detalle</string>
+    <string name="label_ingreso">Ingresos:</string>
+    <string name="label_egreso">Egresos:</string>
+    <string name="label_gastos">Gastos T. Crédito:</string>
 </resources>
