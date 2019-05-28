@@ -7,4 +7,16 @@
     <string name="label_ingreso">Ingresos:</string>
     <string name="label_egreso">Egresos:</string>
     <string name="label_gastos">Gastos T. Crédito:</string>
+    <string name="default_fecha">dd/mm/aa</string>
+    <string-array name="conceptos">
+        <item>Sueldo</item>
+        <item>Prestamo</item>
+        <item>Regalo</item>
+    </string-array>
+    <string-array name="conceptos_egreso">
+        <item>Efectivo</item>
+        <item>Credito</item>
+        <item>Debito</item>
+        <item>Impuestos</item>
+    </string-array>
 </resources>
