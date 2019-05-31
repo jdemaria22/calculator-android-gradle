@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import com.example.aed3.DatabaseHelper;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,19 +49,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void mostrarDetalle(View view) {
         Cursor c = mDatabaseHelper.getData();
-        ArrayList<String> listData = new ArrayList<>();
-        while(c.moveToNext()){
+        ArrayList<Movimiento> listData = new ArrayList<>();
+        /*while(c.moveToNext()){
+            Movimiento m = new Movimiento();
+            m.setId(0);
+            m.setCategoria();
             //get the value from the database in column 1
             //then add it to the ArrayList
-            listData.add(c.getString(1));
-        }
+            listData.add(;
+        }*/
+        Toast.makeText(this,c.getString(1), Toast.LENGTH_SHORT);
     }
 
     public void AddData(Double monto, String concepto, String categoria ,String fecha) {
         boolean insertData = mDatabaseHelper.addData(monto, concepto, categoria, fecha);
 
         if (insertData) {
-            Toast.makeText(getApplicationContext(),"Sin errores", Toast.LENGTH_SHORT);
+            Toast.makeText(this,"Sin errores", Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(getApplicationContext(),"conErrores", Toast.LENGTH_SHORT).show();
         }
