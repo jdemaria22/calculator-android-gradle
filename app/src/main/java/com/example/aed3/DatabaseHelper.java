@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -17,11 +18,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String TABLE_NAME = "movimientos";
-    private static final String COL1 = "ID";
+    private static final String COL1 = "id";
     private static final String COL2 = "monto";
     private static final String COL3 = "concepto";
     private static final String COL4 = "categoria";
-    //private static final String COL5 = "fecha";
+    private static final String COL5 = "fecha";
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -29,10 +30,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" DOUBLE, " + COL3 + " TEXT, " + COL4 + " TEXT)";
-        db.execSQL(createTable);
+        String sql = "CREATE TABLE movimientos (id INTEGER PRIMARY KEY AUTOINCREMENT, monto TEXT, concepto TEXT, categoria TEXT, fecha TEXT)";
+        /*String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL2 +" DOUBLE, " + COL3 + " TEXT, " + COL4 + " TEXT)";*/
+        db.execSQL(sql);
     }
 
     @Override
@@ -41,15 +42,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(Double monto, String concepto, String categoria, String fecha) {
+    public boolean addData(String monto, String concepto, String categoria, String fecha) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, monto);
         contentValues.put(COL3, concepto);
         contentValues.put(COL4, categoria);
-        //contentValues.put(COL5, fecha);
+        contentValues.put(COL5, fecha);
 
-        Log.d(TAG, "addData: Adding " + monto + " - " + concepto + " - " + categoria + " to " + TABLE_NAME);
+        Log.d(TAG, "addData: Adding MONTO:" + monto + " - CONCEPTO:" + concepto + " - CATEGORIA:" + categoria + " - FECHA:" + fecha + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -85,16 +86,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    /**
-     * Delete from database
-     * @param id
-     */
-    public void deleteName(int id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
-                + COL1 + " = '" + id + "'";
-        Log.d(TAG, "deleteMovimiento: query: " + query);
-        Log.d(TAG, "deleteMovimiento: Deleting " + id + " from database.");
-        db.execSQL(query);
+    public long getProfilesCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+        return count;
     }
 }

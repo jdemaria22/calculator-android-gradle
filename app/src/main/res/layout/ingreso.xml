@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.LinearLayoutCompat
