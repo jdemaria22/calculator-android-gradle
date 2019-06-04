@@ -42,9 +42,7 @@
             layout="@layout/table"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
-
     </LinearLayout>
-
 
     <Button
         android:id="@+id/button_nuevo"

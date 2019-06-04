@@ -9,14 +9,16 @@
     <string name="label_gastos">Gastos T. Crédito:</string>
     <string name="default_fecha">dd/mm/aa</string>
     <string-array name="conceptos">
+        <item>Tarjeta de Credito</item>
         <item>Sueldo</item>
-        <item>Prestamo</item>
-        <item>Regalo</item>
+        <item>Debito</item>
+        <item>Efectivo</item>
     </string-array>
     <string-array name="conceptos_egreso">
-        <item>Efectivo</item>
-        <item>Credito</item>
-        <item>Debito</item>
+        <item>Mercados</item>
+        <item>Alquiler</item>
+        <item>Transporte</item>
         <item>Impuestos</item>
+        <item>Otros</item>
     </string-array>
 </resources>

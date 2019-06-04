@@ -3,7 +3,6 @@ package com.example.aed3;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -85,6 +84,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT " + COL1 + " FROM " + TABLE_NAME +
                 " WHERE " + COL1 + " = '" + id + "'";
         Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getEgresoMercados() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query2 = "SELECT * FROM movimientos WHERE tipo = '2' AND categoria = 'Mercados'";
+        Cursor data = db.rawQuery(query2, null);
+        Integer cantidad = new Integer(data.getColumnCount());
+        Log.d(TAG, cantidad.toString());
+        //Log.d(TAG, data.getString(0));
+        return data;
+    }
+
+    public  Cursor getEgresoAlquier() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query2 = "SELECT * FROM movimientos WHERE tipo = '2' AND categoria = 'Alquiler'";
+        Cursor data = db.rawQuery(query2, null);
+        Integer cantidad = new Integer(data.getColumnCount());
+        Log.d(TAG, cantidad.toString());
+        return data;
+    }
+
+    public Cursor getEgresoTransporte() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query2 = "SELECT * FROM movimientos WHERE tipo = '2' AND categoria = 'Transporte'";
+        Cursor data = db.rawQuery(query2, null);
+        Integer cantidad = new Integer(data.getColumnCount());
+        Log.d(TAG, cantidad.toString());
+        return data;
+    }
+
+    public Cursor getEgresoImpuestos() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query2 = "SELECT * FROM movimientos WHERE tipo = '2' AND categoria = 'Impuestos'";
+        Cursor data = db.rawQuery(query2, null);
+        Integer cantidad = new Integer(data.getColumnCount());
+        Log.d(TAG, cantidad.toString());
+        return data;
+    }
+
+    public Cursor getEgresoOtros() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query2 = "SELECT * FROM movimientos WHERE tipo = '2' AND categoria = 'Otros'";
+        Cursor data = db.rawQuery(query2, null);
+        Integer cantidad = new Integer(data.getColumnCount());
+        Log.d(TAG, cantidad.toString());
         return data;
     }
 
