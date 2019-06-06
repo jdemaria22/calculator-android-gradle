@@ -8,23 +8,23 @@
 
     <TableRow>
         <TextView
+            android:id="@+id/row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_ingreso"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="start"
             android:background="#ffffff"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginBottom="1dp"
-/>
+            android:layout_marginBottom="1dp" />
 
         <TextView
+            android:id="@+id/total_ingreso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="a@a.com"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="center"
             android:background="#ffffff"
@@ -44,13 +44,13 @@
             android:background="#ffffff"
             android:gravity="start"
             android:text="@string/label_egreso"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/total_egreso"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="b@b.com"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="center"
             android:background="#ffffff"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_gastos"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="start"
             android:background="#ffffff"
@@ -73,10 +73,10 @@
             android:layout_marginBottom="1dp"/>
 
         <TextView
+            android:id="@+id/total_tc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="c@c.com"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="center"
             android:background="#ffffff"

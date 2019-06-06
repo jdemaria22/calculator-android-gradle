@@ -40,12 +40,12 @@
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/editText2Egreso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number|numberDecimal" />
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -63,14 +63,14 @@
             android:textSize="16sp" />
 
         <Spinner
-            android:id="@+id/conceptos"
+            android:id="@+id/conceptosEgreso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/conceptos" />
     </android.support.v7.widget.LinearLayoutCompat>
 
     <Button
-        android:id="@+id/agregar_fecha"
+        android:id="@+id/agregar_fechaEgreso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"
@@ -82,7 +82,7 @@
         android:textColor="#FFFFFF"/>
 
     <TextView
-        android:id="@+id/fecha_selected"
+        android:id="@+id/fecha_selectedEgreso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25dp"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/categoria"
+            android:id="@+id/categoriaEgreso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -106,7 +106,7 @@
             android:textSize="16sp" />
 
         <Spinner
-            android:id="@+id/categorias"
+            android:id="@+id/categoriasEgresos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -114,7 +114,7 @@
     </android.support.v7.widget.LinearLayoutCompat>
 
     <Button
-        android:id="@+id/aceptar"
+        android:id="@+id/aceptarEgreso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
@@ -124,7 +124,8 @@
         android:fontFamily="@font/droid_sans_bold"
         android:text="Aceptar"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:onClick="cargarEgreso"/>
 
     <Button
         android:id="@+id/cancelar"
