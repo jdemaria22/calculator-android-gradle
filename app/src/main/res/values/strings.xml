@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AhoRRap</string>
+    <string name="app_name">Sistema de Ahorro</string>
     <string name="fecha_actual"></string>
     <string name="boton_nuevo">Nuevo Ingreso</string>
     <string name="boton_egreso">Nuevo Egreso</string>
