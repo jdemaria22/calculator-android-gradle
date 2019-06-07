@@ -48,11 +48,18 @@
 
         </LinearLayout>
     <LinearLayout
+        android:id="@+id/linea_detalle"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:orientation="vertical"
         android:layout_marginHorizontal="20dp"
         android:background="@color/color_negro">
+        <TextView
+            android:id="@+id/txtv_nt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No tiene datos cargados."
+            android:textColor="@color/color_negro"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

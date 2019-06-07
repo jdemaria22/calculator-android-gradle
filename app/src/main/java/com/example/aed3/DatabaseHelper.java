@@ -136,9 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getIngresosDelMes() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT monto, fecha FROM movimientos WHERE tipo = '1' AND concepto != 'Tarjeta de Credito'";
-        String query2 = "WHERE strftime('%m',fecha) = strftime('%m','now')  AND tipo = '1' AND concepto != 'Tarjeta de Credito'";
         Cursor data = db.rawQuery(query,null);
-        //Double monto = new Double(data.getInt(0));
         if(data.moveToFirst()) {
             Log.d(TAG, data.getString(1));
         }

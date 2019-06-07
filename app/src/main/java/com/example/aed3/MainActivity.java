@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -56,19 +57,27 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MES: ", mes.toString());
         Double total = new Double(0.00);
         if(fila.moveToFirst()) {
-            for (int i = 1 ; i < fila.getCount(); i++){
+            String s = fila.getString(1);
+            String s1 = s.substring(s.indexOf("/") + 1 );
+            String s2 = s1.substring(0,s1.indexOf("/"));
+            Double monto = new Double(fila.getDouble(0));
+            Integer is2 = new Integer(s2);
+            Log.d("Mes_actual:", is2.toString());
+            if (is2.equals(mes)){
+                total += fila.getDouble(0);
+            }
+            Log.d("Total",total.toString());
+
+            for (int i = 0 ; i < fila.getCount(); i++){
                 if (fila.moveToNext()){
-                    String s = fila.getString(1);
-                    String s1 = s.substring(s.indexOf("/") + 1 );
-                    String s2 = s1.substring(0,s1.indexOf("/"));
-                    Double monto = new Double(fila.getDouble(0));
-                    Integer is2 = new Integer(s2);
+                    s = fila.getString(1);
+                    s1 = s.substring(s.indexOf("/") + 1 );
+                    s2 = s1.substring(0,s1.indexOf("/"));
+                    monto = new Double(fila.getDouble(0));
+                    is2 = new Integer(s2);
                     Log.d("Mes_actual:", is2.toString());
                     if (is2.equals(mes)){
                         total += fila.getDouble(0);
-                    }
-                    else{
-
                     }
                     Log.d("Total",total.toString());
                 }
@@ -85,13 +94,24 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MES: ", mes.toString());
         Double total = new Double(0.00);
         if(fila.moveToFirst()) {
+            String s = fila.getString(1);
+            String s1 = s.substring(s.indexOf("/") + 1 );
+            String s2 = s1.substring(0,s1.indexOf("/"));
+            Double monto = new Double(fila.getDouble(0));
+            Integer is2 = new Integer(s2);
+            Log.d("Mes_actual:", is2.toString());
+            if (is2.equals(mes)){
+                total += fila.getDouble(0);
+            }
+            Log.d("Total",total.toString());
+
             for (int i = 1 ; i < fila.getCount(); i++){
                 if (fila.moveToNext()){
-                    String s = fila.getString(1);
-                    String s1 = s.substring(s.indexOf("/") + 1 );
-                    String s2 = s1.substring(0,s1.indexOf("/"));
-                    Double monto = new Double(fila.getDouble(0));
-                    Integer is2 = new Integer(s2);
+                    s = fila.getString(1);
+                    s1 = s.substring(s.indexOf("/") + 1 );
+                    s2 = s1.substring(0,s1.indexOf("/"));
+                    monto = new Double(fila.getDouble(0));
+                    is2 = new Integer(s2);
                     Log.d("Mes_actual:", is2.toString());
                     if (is2.equals(mes)){
                         total += fila.getDouble(0);
@@ -111,13 +131,24 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MES: ", mes.toString());
         Double total = new Double(0.00);
         if(fila.moveToFirst()) {
+            String s = fila.getString(1);
+            String s1 = s.substring(s.indexOf("/") + 1 );
+            String s2 = s1.substring(0,s1.indexOf("/"));
+            Double monto = new Double(fila.getDouble(0));
+            Integer is2 = new Integer(s2);
+            Log.d("Mes_actual:", is2.toString());
+            if (is2.equals(mes)){
+                total += fila.getDouble(0);
+            }
+            Log.d("Total",total.toString());
+
             for (int i = 1 ; i < fila.getCount(); i++){
                 if (fila.moveToNext()){
-                    String s = fila.getString(1);
-                    String s1 = s.substring(s.indexOf("/") + 1 );
-                    String s2 = s1.substring(0,s1.indexOf("/"));
-                    Double monto = new Double(fila.getDouble(0));
-                    Integer is2 = new Integer(s2);
+                    s = fila.getString(1);
+                    s1 = s.substring(s.indexOf("/") + 1 );
+                    s2 = s1.substring(0,s1.indexOf("/"));
+                    monto = new Double(fila.getDouble(0));
+                    is2 = new Integer(s2);
                     Log.d("Mes_actual:", is2.toString());
                     if (is2.equals(mes)){
                         total += fila.getDouble(0);
@@ -153,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     saldo.setTextColor(yellowC);
                 }
             }
-            saldo.setText("$ " + total.toString());
+            saldo.setText("$ " + str);
             TextView total_egreso = findViewById(R.id.total_egreso);
             total_egreso.setText("$ "+ String.format("%.02f",totalEgresosDelMes()));
             TextView total_ingreso = findViewById(R.id.total_ingreso);
@@ -261,9 +292,16 @@ public class MainActivity extends AppCompatActivity {
         try {
             //Cargo database
             mDatabaseHelper.getReadableDatabase();
+            int negroC = Color.parseColor("#000000");
+            int blancoC = Color.parseColor("#FFFFFF");
+            int grisC = Color.parseColor("#FFADADB3");
+            int redC = Color.parseColor("#FF0000");
+            int greenC = Color.parseColor("#FF01DF01");
             long cantidad = mDatabaseHelper.getProfilesCount();
             Cursor fila = mDatabaseHelper.getData();
             setContentView(R.layout.detalle);
+            LinearLayout linea = findViewById(R.id.linea_detalle);
+
             TableLayout ll = (TableLayout) findViewById(R.id.table_detalle_header);
             //fecha
             TableRow.LayoutParams lt = new TableRow.LayoutParams(280,200);
@@ -275,11 +313,7 @@ public class MainActivity extends AppCompatActivity {
             TableRow.LayoutParams ltmonto = new TableRow.LayoutParams(300,200);
             ltmonto.setMargins(1,1,1,1);
             //
-            int negroC = Color.parseColor("#000000");
-            int blancoC = Color.parseColor("#FFFFFF");
-            int grisC = Color.parseColor("#FFADADB3");
-            int redC = Color.parseColor("#FF0000");
-            int greenC = Color.parseColor("#FF01DF01");
+
             TableRow row = new TableRow(this);
             row.setBackgroundColor(negroC);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
@@ -317,6 +351,17 @@ public class MainActivity extends AppCompatActivity {
             row.addView(ttipo);
             row.addView(tmonto);
             ll.addView(row,0);
+
+            if (cantidad < 1) {
+                LinearLayout lnt = findViewById(R.id.linea_detalle);
+                lnt.setBackgroundColor(blancoC);
+                TextView nt = findViewById(R.id.txtv_nt);
+                nt.setVisibility(View.VISIBLE);
+            }else
+            {
+                TextView nt = findViewById(R.id.txtv_nt);
+                nt.setVisibility(View.GONE);
+            }
 
             TableLayout lll = (TableLayout) findViewById(R.id.table_detalle);
 
@@ -602,7 +647,7 @@ public class MainActivity extends AppCompatActivity {
             mDatabaseHelper.getReadableDatabase();
             Cursor otros = mDatabaseHelper.getEgresoOtros();
             Double d = new Double(0.00);
-            for (int i = 1; i < otros.getColumnCount(); i++)
+            for (int i = 0; i < otros.getColumnCount(); i++)
                 if (otros.moveToNext()) {
                     d = d + otros.getDouble(1);
                     Log.d("Monto: ", d.toString());
@@ -675,9 +720,7 @@ public class MainActivity extends AppCompatActivity {
             mBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date date = new Date();
                     cal = Calendar.getInstance();
-                    cal.setTime(date);
                     int dia = cal.get(Calendar.DAY_OF_MONTH);
                     int mes = cal.get(Calendar.MONTH);
                     int año = cal.get(Calendar.YEAR);
@@ -686,7 +729,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             mTv.setText(dayOfMonth + "/" + (month + 1) + "/" + year );
                         }
-                    }, dia, mes, año);
+                    }, año, mes, dia);
                     dat.show();
                 }
             });
@@ -717,7 +760,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             mTv.setText(dayOfMonth + "/" + (month + 1) + "/" + year );
                         }
-                    }, dia, mes, año);
+                    }, año, mes, dia);
                     dat.show();
                 }
             });

@@ -20,8 +20,8 @@
         android:layout_marginTop="60dp"
         android:fontFamily="@font/droid_sans_bold"
         android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="@string/boton_nuevo"/>
+        android:textSize="22sp"
+        android:text="Nuevo Egreso"/>
 
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -37,7 +37,7 @@
             android:fontFamily="@font/droid_sans_bold"
             android:text="Monto:"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editText2Egreso"
@@ -60,13 +60,15 @@
             android:fontFamily="@font/droid_sans_bold"
             android:text="Concepto:"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"/>
 
         <Spinner
             android:id="@+id/conceptosEgreso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/conceptos" />
+            android:entries="@array/conceptos_egresos"
+            android:layout_marginTop="20dp"/>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <Button
@@ -78,6 +80,7 @@
         android:background="@color/colorPrimary"
         android:fontFamily="@font/droid_sans_bold"
         android:text="Seleccionar Fecha"
+        android:textSize="18sp"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"/>
 
@@ -99,18 +102,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/droid_sans_bold"
             android:text="Categoria:"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/categoriasEgresos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:entries="@array/conceptos_egreso" />
+            android:layout_marginTop="15dp"
+            android:entries="@array/categoria_egreso"/>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <Button
@@ -123,6 +126,7 @@
         android:background="@color/colorPrimary"
         android:fontFamily="@font/droid_sans_bold"
         android:text="Aceptar"
+        android:textSize="18sp"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:onClick="cargarEgreso"/>
@@ -136,6 +140,7 @@
         android:background="@color/colorPrimary"
         android:fontFamily="@font/droid_sans_bold"
         android:text="Cancelar"
+        android:textSize="18sp"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:onClick="Inicio"/>

@@ -8,13 +8,18 @@
     <string name="label_egreso">Egresos:</string>
     <string name="label_gastos">Gastos T. Crédito:</string>
     <string name="default_fecha">dd/mm/aa</string>
-    <string-array name="conceptos">
-        <item>Tarjeta de Credito</item>
+    <string-array name="conceptos_ingresos">
         <item>Sueldo</item>
-        <item>Debito</item>
-        <item>Efectivo</item>
+        <item>Prestamo</item>
+        <item>Otros</item>
     </string-array>
-    <string-array name="conceptos_egreso">
+    <string-array name="conceptos_egresos">
+        <item>Efectivo</item>
+        <item>Debito</item>
+        <item>Transferencia</item>
+        <item>Tarjeta de Credito</item>
+    </string-array>
+    <string-array name="categoria_egreso">
         <item>Mercados</item>
         <item>Alquiler</item>
         <item>Transporte</item>

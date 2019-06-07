@@ -27,13 +27,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_weight="5"
+            android:gravity="start"
             android:background="#ffffff"
             android:layout_marginTop="1dp"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="1dp"
-            android:padding="20dp"/>
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
 
     </TableRow>
     <TableRow>
@@ -56,12 +57,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="20sp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_weight="5"
+            android:gravity="start"
             android:background="#ffffff"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="1dp"
-            android:padding="20dp"/>
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
 
 
     </TableRow>
@@ -85,12 +87,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_weight="6"
+            android:gravity="start"
             android:background="#ffffff"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="1dp"
-            android:padding="20dp"/>
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
 
 
     </TableRow>
