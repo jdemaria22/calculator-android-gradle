@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +21,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Calendar cal;
     DatePickerDialog dat;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
         mDatabaseHelper = new DatabaseHelper(this);
         actualizarSaldo();
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * Metodo que retorna el total de ingresos del mes actual.
+     * @return
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public Double totalIngresosDelMes() {
         mDatabaseHelper.getReadableDatabase();
         Cursor fila = mDatabaseHelper.getIngresosDelMes();
@@ -85,7 +88,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return total;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * Metodo que retorna el total de egresos en el mes actual.
+     * @return
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public Double totalEgresosDelMes() {
         mDatabaseHelper.getReadableDatabase();
         Cursor fila = mDatabaseHelper.getEgresosDelMes();
@@ -122,7 +130,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return total;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * Metodo que retorna el total de gastos con tarjeta de credito en el mes actual.
+     * @return
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public Double totalTarjetaCredito(){
         mDatabaseHelper.getReadableDatabase();
         Cursor fila = mDatabaseHelper.getGastosTC();
@@ -159,7 +172,11 @@ public class MainActivity extends AppCompatActivity {
         }
         return total;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * Actualiza el saldo en la pantalla Inicio.
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public void actualizarSaldo(){
         try {
             Double egreso = new Double(totalEgresosDelMes());
@@ -206,7 +223,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * Metodo que carga un Ingreso en la tabla movimientos.
+     * @param view
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public void cargarIngreso(View view) {
         try{
             EditText monto = (EditText)findViewById(R.id.editText2);
@@ -230,7 +252,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    /**
+     * Metodo que carga un Egreso en la tabla movimientos.
+     * @param view
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public void cargarEgreso(View view) {
         try {
             EditText monto = (EditText)findViewById(R.id.editText2Egreso);
@@ -255,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Valida todos los input al momento de hacer un ingres u egreso, en ambas pantallas.
+     * @param input
+     * @param tipo
+     * @return
+     */
     public boolean validarInput(String input, String tipo) {
         try {
             if (tipo.equals("Fecha")) {
@@ -287,7 +319,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    /**
+     * Redirige hacia la pantalla Detalle y dibuja la tabla dinamica con los movimientos.
+     * @param view
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public void mostrarDetalle(View view) {
         try {
             //Cargo database
@@ -421,6 +457,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Dibuja en la pantalla Detalle la tabla con los totales de egresos de cada Categoria
+     */
     public void tablaEgresos() {
         try {
             TableLayout le = (TableLayout) findViewById(R.id.table_egresos);
@@ -557,6 +596,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retorna los egresos de categoria "Mercado".
+     * @return
+     */
     public Double obtenerEgresoMercado() {
         try {
 
@@ -579,6 +622,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retorna los egresos de Categoria "Alquiler".
+     * @return
+     */
     public Double obtenerEgresoAlquier() {
         try {
             mDatabaseHelper.getReadableDatabase();
@@ -600,6 +647,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retorna los egresos de Categoria "Transporte".
+     * @return
+     */
     public Double obtenerEgresoTransporte() {
         try {
             mDatabaseHelper.getReadableDatabase();
@@ -621,6 +672,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retorna los egresos de Categoria "Impuestos".
+     * @return
+     */
     public Double obtenerEgresoImpuestos() {
         try {
             mDatabaseHelper.getReadableDatabase();
@@ -642,6 +697,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retorna los egresos de Categoria "Otros".
+     * @return
+     */
     public Double obtenerEgresoOtros() {
         try {
             mDatabaseHelper.getReadableDatabase();
@@ -663,7 +722,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Metodo para insertar una row en la tabla "movimientos".
+     * @param monto
+     * @param concepto
+     * @param categoria
+     * @param fecha
+     * @param tipo
+     */
     public void AddData(String monto, String concepto, String categoria, String fecha, int tipo) {
         try {
             boolean insertData = mDatabaseHelper.addData(monto, concepto, categoria, fecha, tipo);
@@ -682,6 +748,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Actualiza la fecha actual en la pantalla Inicio.
+     */
     public void actualizar_fecha() {
         try {
 
@@ -712,6 +782,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Cargar un nuevo calendario en la pantalla Ingresos.
+     */
     public void cargarCalendario() {
         try {
             mTv = (TextView)findViewById(R.id.fecha_selected);
@@ -742,6 +816,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Cargar un nuevo calendario en la pantalla Egresos.
+     */
     public void cargarCalendarioEgreso() {
         try {
             mTv = (TextView)findViewById(R.id.fecha_selectedEgreso);
@@ -772,17 +849,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Va hacia la pantalla de carga de Ingresos.
+     * @param view
+     */
     public void nuevoIngreso(View view) {
         setContentView(R.layout.ingreso);
         cargarCalendario();
     }
 
+    /**
+     * Va hacia la pantalla de carga de Egresos.
+     * @param view
+     */
     public void nuevoEgreso(View view) {
         setContentView(R.layout.egreso);
         cargarCalendarioEgreso();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    /**
+     * Vuelve al la pantalla del inicio.
+     * @param view
+     */
+    @RequiresApi(api = VERSION_CODES.O)
     public void Inicio(View view) {
         setContentView(R.layout.activity_main);
         actualizar_fecha();
