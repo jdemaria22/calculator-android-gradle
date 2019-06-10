@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -21,156 +20,43 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    public String fecha_actual = "";
-    public static String formato = "EEEE dd MMMM yyyy";
     public TextView mTv;
     public Button mBtn;
+    public Controlador controlador = new Controlador();
+    public Calculos calculos = new Calculos();
     DatabaseHelper mDatabaseHelper;
     Calendar cal;
     DatePickerDialog dat;
 
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @RequiresApi(api = VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        actualizar_fecha();
-        mDatabaseHelper = new DatabaseHelper(this);
-        actualizarSaldo();
-    }
-
-    /**
-     * Metodo que retorna el total de ingresos del mes actual.
-     * @return
-     */
-    @RequiresApi(api = VERSION_CODES.O)
-    public Double totalIngresosDelMes() {
-        mDatabaseHelper.getReadableDatabase();
-        Cursor fila = mDatabaseHelper.getIngresosDelMes();
-        LocalDate currentDate = LocalDate.now();
-        Integer mes = new Integer(currentDate.getMonthValue());
-        Log.d("MES: ", mes.toString());
-        Double total = new Double(0.00);
-        if(fila.moveToFirst()) {
-            String s = fila.getString(1);
-            String s1 = s.substring(s.indexOf("/") + 1 );
-            String s2 = s1.substring(0,s1.indexOf("/"));
-            Double monto = new Double(fila.getDouble(0));
-            Integer is2 = new Integer(s2);
-            Log.d("Mes_actual:", is2.toString());
-            if (is2.equals(mes)){
-                total += fila.getDouble(0);
-            }
-            Log.d("Total",total.toString());
-
-            for (int i = 0 ; i < fila.getCount(); i++){
-                if (fila.moveToNext()){
-                    s = fila.getString(1);
-                    s1 = s.substring(s.indexOf("/") + 1 );
-                    s2 = s1.substring(0,s1.indexOf("/"));
-                    monto = new Double(fila.getDouble(0));
-                    is2 = new Integer(s2);
-                    Log.d("Mes_actual:", is2.toString());
-                    if (is2.equals(mes)){
-                        total += fila.getDouble(0);
-                    }
-                    Log.d("Total",total.toString());
-                }
-            }
+        try  {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            actualizar_fecha();
+            mDatabaseHelper = new DatabaseHelper(this);
+            actualizarSaldo();
+            Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+            controlador.agregarBtnBack(t);
+        }   catch (Exception e) {
+            Toast toast1 =
+                    Toast.makeText(getApplicationContext(),
+                            e.toString() , Toast.LENGTH_LONG);
+            toast1.show();
         }
-        return total;
-    }
-
-    /**
-     * Metodo que retorna el total de egresos en el mes actual.
-     * @return
-     */
-    @RequiresApi(api = VERSION_CODES.O)
-    public Double totalEgresosDelMes() {
-        mDatabaseHelper.getReadableDatabase();
-        Cursor fila = mDatabaseHelper.getEgresosDelMes();
-        LocalDate currentDate = LocalDate.now();
-        Integer mes = new Integer(currentDate.getMonthValue());
-        Log.d("MES: ", mes.toString());
-        Double total = new Double(0.00);
-        if(fila.moveToFirst()) {
-            String s = fila.getString(1);
-            String s1 = s.substring(s.indexOf("/") + 1 );
-            String s2 = s1.substring(0,s1.indexOf("/"));
-            Double monto = new Double(fila.getDouble(0));
-            Integer is2 = new Integer(s2);
-            Log.d("Mes_actual:", is2.toString());
-            if (is2.equals(mes)){
-                total += fila.getDouble(0);
-            }
-            Log.d("Total",total.toString());
-
-            for (int i = 1 ; i < fila.getCount(); i++){
-                if (fila.moveToNext()){
-                    s = fila.getString(1);
-                    s1 = s.substring(s.indexOf("/") + 1 );
-                    s2 = s1.substring(0,s1.indexOf("/"));
-                    monto = new Double(fila.getDouble(0));
-                    is2 = new Integer(s2);
-                    Log.d("Mes_actual:", is2.toString());
-                    if (is2.equals(mes)){
-                        total += fila.getDouble(0);
-                    }
-                    Log.d("Total",total.toString());
-                }
-            }
-        }
-        return total;
-    }
-
-    /**
-     * Metodo que retorna el total de gastos con tarjeta de credito en el mes actual.
-     * @return
-     */
-    @RequiresApi(api = VERSION_CODES.O)
-    public Double totalTarjetaCredito(){
-        mDatabaseHelper.getReadableDatabase();
-        Cursor fila = mDatabaseHelper.getGastosTC();
-        LocalDate currentDate = LocalDate.now();
-        Integer mes = new Integer(currentDate.getMonthValue());
-        Log.d("MES: ", mes.toString());
-        Double total = new Double(0.00);
-        if(fila.moveToFirst()) {
-            String s = fila.getString(1);
-            String s1 = s.substring(s.indexOf("/") + 1 );
-            String s2 = s1.substring(0,s1.indexOf("/"));
-            Double monto = new Double(fila.getDouble(0));
-            Integer is2 = new Integer(s2);
-            Log.d("Mes_actual:", is2.toString());
-            if (is2.equals(mes)){
-                total += fila.getDouble(0);
-            }
-            Log.d("Total",total.toString());
-
-            for (int i = 1 ; i < fila.getCount(); i++){
-                if (fila.moveToNext()){
-                    s = fila.getString(1);
-                    s1 = s.substring(s.indexOf("/") + 1 );
-                    s2 = s1.substring(0,s1.indexOf("/"));
-                    monto = new Double(fila.getDouble(0));
-                    is2 = new Integer(s2);
-                    Log.d("Mes_actual:", is2.toString());
-                    if (is2.equals(mes)){
-                        total += fila.getDouble(0);
-                    }
-                    Log.d("Total",total.toString());
-                }
-            }
-        }
-        return total;
     }
 
     /**
@@ -179,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = VERSION_CODES.O)
     public void actualizarSaldo(){
         try {
-            Double egreso = new Double(totalEgresosDelMes());
-            Double ingreso = new Double(totalIngresosDelMes());
+            Double egreso = new Double(calculos.totalEgresosDelMes(mDatabaseHelper));
+            Double ingreso = new Double(calculos.totalIngresosDelMes(mDatabaseHelper));
             Double total = new Double(0.00);
             total = ingreso - egreso;
             float d = total.floatValue();
@@ -203,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
             }
             saldo.setText("$ " + str);
             TextView total_egreso = findViewById(R.id.total_egreso);
-            total_egreso.setText("$ "+ String.format("%.02f",totalEgresosDelMes()));
+            total_egreso.setText("$ "+ String.format("%.02f",calculos.totalEgresosDelMes(mDatabaseHelper)));
             TextView total_ingreso = findViewById(R.id.total_ingreso);
-            total_ingreso.setText("$ "+ String.format("%.02f",totalIngresosDelMes()));
+            total_ingreso.setText("$ "+ String.format("%.02f",calculos.totalIngresosDelMes(mDatabaseHelper)));
             TextView total_tc = findViewById(R.id.total_tc);
-            total_tc.setText("$ " + String.format("%.02f", totalTarjetaCredito()));
+            total_tc.setText("$ " + String.format("%.02f", calculos.totalTarjetaCredito(mDatabaseHelper)));
             //seteo en negrito los labels
             TextView total_egreso_label = findViewById(R.id.row);
             total_egreso_label.setTypeface(null, Typeface.BOLD);
@@ -234,11 +120,10 @@ public class MainActivity extends AppCompatActivity {
             EditText monto = (EditText)findViewById(R.id.editText2);
             Spinner concepto = (Spinner) findViewById(R.id.lista_conceptos);
             TextView fecha = (TextView) findViewById(R.id.fecha_selected);
-            int flag = 0;
             if (validarInput(monto.getText().toString(),"Monto")
               & validarInput(concepto.getSelectedItem().toString(), "Concepto")
               & validarInput(fecha.getText().toString(), "Fecha")) {
-                AddData(monto.getText().toString() , concepto.getSelectedItem().toString(), "", fecha.getText().toString(), 1);
+                controlador.AddData(monto.getText().toString() , concepto.getSelectedItem().toString(), "", fecha.getText().toString(), 1, mDatabaseHelper, getApplicationContext());
                 setContentView(R.layout.activity_main);
                 actualizar_fecha();
                 actualizarSaldo();
@@ -268,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     & validarInput(concepto.getSelectedItem().toString(), "Concepto")
                     & validarInput(fecha.getText().toString(), "Fecha")
                     & validarInput(categoria.getSelectedItem().toString(),"Categoria")) {
-                AddData(monto.getText().toString(), concepto.getSelectedItem().toString(), categoria.getSelectedItem().toString(), fecha.getText().toString(),2);
+                controlador.AddData(monto.getText().toString(), concepto.getSelectedItem().toString(), categoria.getSelectedItem().toString(), fecha.getText().toString(),2,mDatabaseHelper,getApplicationContext());
                 setContentView(R.layout.activity_main);
                 actualizar_fecha();
                 actualizarSaldo();
@@ -487,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
             vmercados.setGravity(Gravity.CENTER);
             vmercados.setTextSize(18);
             vmercados.setPadding(300,30,250,35);
-            String smercados = String.format("%.02f",obtenerEgresoMercado());
+            String smercados = String.format("%.02f",calculos.obtenerEgresoMercado(mDatabaseHelper,getApplicationContext()));
             vmercados.setText("$ " + smercados);
             row.addView(mercados);
             row.addView(vmercados);
@@ -511,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
             valquiler.setGravity(Gravity.CENTER);
             valquiler.setPadding(300,30,250,35);
             valquiler.setTextSize(18);
-            String salquiler = String.format("%.02f",obtenerEgresoAlquier());
+            String salquiler = String.format("%.02f",calculos.obtenerEgresoAlquier(mDatabaseHelper,getApplicationContext()));
             valquiler.setText("$ " + salquiler);
             row1.addView(alquiler);
             row1.addView(valquiler);
@@ -535,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
             vtransporte.setGravity(Gravity.CENTER);
             vtransporte.setPadding(300,30,250,35);
             vtransporte.setTextSize(18);
-            String stransporte = String.format("%.02f",obtenerEgresoTransporte());
+            String stransporte = String.format("%.02f",calculos.obtenerEgresoTransporte(mDatabaseHelper,getApplicationContext()));
             vtransporte.setText("$ " + stransporte);
             row2.addView(transporte);
             row2.addView(vtransporte);
@@ -559,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
             vimpuestos.setGravity(Gravity.CENTER);
             vimpuestos.setPadding(300,30,250,35);
             vimpuestos.setTextSize(18);
-            String simpuestos = String.format("%.02f",obtenerEgresoImpuestos());
+            String simpuestos = String.format("%.02f",calculos.obtenerEgresoImpuestos(mDatabaseHelper,getApplicationContext()));
             vimpuestos.setText("$ " + simpuestos);
             row3.addView(impuestos);
             row3.addView(vimpuestos);
@@ -583,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
             votros.setPadding(300,30,250,35);
             votros.setGravity(Gravity.CENTER);
             votros.setTextSize(18);
-            String sotros = String.format("%.02f", obtenerEgresoOtros());
+            String sotros = String.format("%.02f", calculos.obtenerEgresoOtros(mDatabaseHelper,getApplicationContext()));
             votros.setText("$ " + sotros);
             row4.addView(otros);
             row4.addView(votros);
@@ -597,191 +482,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Retorna los egresos de categoria "Mercado".
-     * @return
-     */
-    public Double obtenerEgresoMercado() {
-        try {
-
-            mDatabaseHelper.getReadableDatabase();
-            Cursor mercado = mDatabaseHelper.getEgresoMercados();
-            Double d = new Double(0.00);
-            for (int i = 1; i < mercado.getColumnCount(); i++)
-                if (mercado.moveToNext()) {
-                    d = d + mercado.getDouble(1);
-                    Log.d("Monto: ", d.toString());
-                }
-            mDatabaseHelper.close();
-            return d;
-        } catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-            return 0.00;
-        }
-    }
-
-    /**
-     * Retorna los egresos de Categoria "Alquiler".
-     * @return
-     */
-    public Double obtenerEgresoAlquier() {
-        try {
-            mDatabaseHelper.getReadableDatabase();
-            Cursor alquiler = mDatabaseHelper.getEgresoAlquier();
-            Double d = new Double(0.00);
-            for (int i = 1; i < alquiler.getColumnCount(); i++)
-                if (alquiler.moveToNext()) {
-                    d = d + alquiler.getDouble(1);
-                    Log.d("Monto: ", d.toString());
-                }
-            mDatabaseHelper.close();
-            return d;
-        }catch (Exception e) {
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-            return 0.00;
-        }
-    }
-
-    /**
-     * Retorna los egresos de Categoria "Transporte".
-     * @return
-     */
-    public Double obtenerEgresoTransporte() {
-        try {
-            mDatabaseHelper.getReadableDatabase();
-            Cursor transporte = mDatabaseHelper.getEgresoTransporte();
-            Double d = new Double(0.00);
-            for (int i = 1; i < transporte.getColumnCount(); i++)
-                if (transporte.moveToNext()) {
-                    d = d + transporte.getDouble(1);
-                    Log.d("Monto: ", d.toString());
-                }
-            mDatabaseHelper.close();
-            return d;
-        }catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-            return 0.00;
-        }
-    }
-
-    /**
-     * Retorna los egresos de Categoria "Impuestos".
-     * @return
-     */
-    public Double obtenerEgresoImpuestos() {
-        try {
-            mDatabaseHelper.getReadableDatabase();
-            Cursor impuestos = mDatabaseHelper.getEgresoImpuestos();
-            Double d = new Double(0.00);
-            for (int i = 1; i < impuestos.getColumnCount(); i++)
-                if (impuestos.moveToNext()) {
-                    d = d + impuestos.getDouble(1);
-                    Log.d("Monto: ", d.toString());
-                }
-            mDatabaseHelper.close();
-            return d;
-        }catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-            return 0.00;
-        }
-    }
-
-    /**
-     * Retorna los egresos de Categoria "Otros".
-     * @return
-     */
-    public Double obtenerEgresoOtros() {
-        try {
-            mDatabaseHelper.getReadableDatabase();
-            Cursor otros = mDatabaseHelper.getEgresoOtros();
-            Double d = new Double(0.00);
-            for (int i = 0; i < otros.getColumnCount(); i++)
-                if (otros.moveToNext()) {
-                    d = d + otros.getDouble(1);
-                    Log.d("Monto: ", d.toString());
-                }
-            mDatabaseHelper.close();
-            return d;
-        }catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-            return 0.00;
-        }
-    }
-
-    /**
-     * Metodo para insertar una row en la tabla "movimientos".
-     * @param monto
-     * @param concepto
-     * @param categoria
-     * @param fecha
-     * @param tipo
-     */
-    public void AddData(String monto, String concepto, String categoria, String fecha, int tipo) {
-        try {
-            boolean insertData = mDatabaseHelper.addData(monto, concepto, categoria, fecha, tipo);
-
-            if (insertData) {
-                Toast.makeText(getApplicationContext(),"Se cargo correctamente.", Toast.LENGTH_SHORT);
-            } else {
-                Toast.makeText(getApplicationContext(),"con Errores", Toast.LENGTH_SHORT).show();
-            }
-        }catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-        }
-
-    }
-
-
-    /**
      * Actualiza la fecha actual en la pantalla Inicio.
      */
     public void actualizar_fecha() {
-        try {
-
-            /* instancio la fecha actual. */
-            Locale locale = new Locale("es", "AR");
-            DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(locale);
-            dateFormatSymbols.setWeekdays(new String[]{
-                    "Unused",
-                    "Domingo",
-                    "Lunes",
-                    "Martes",
-                    "Miercoles",
-                    "Jueves",
-                    "Viernes",
-                    "Sabado",
-            });
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formato,dateFormatSymbols);
-            fecha_actual = simpleDateFormat.format(new Date());
-
-            /* actualizo la fecha actual cada vez que se instancia la aplicacion */
-            final TextView textViewToChange = (TextView) findViewById(R.id.fecha_id);
-            textViewToChange.setText(fecha_actual);
-        }catch (Exception e){
-            Toast toast1 =
-                    Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
-            toast1.show();
-        }
+        TextView fecha = (TextView) findViewById(R.id.fecha_id);
+        controlador.actualizar_fecha(fecha ,getApplicationContext());
     }
-
 
     /**
      * Cargar un nuevo calendario en la pantalla Ingresos.
