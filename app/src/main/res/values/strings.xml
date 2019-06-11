@@ -8,6 +8,9 @@
     <string name="label_egreso">Egresos:</string>
     <string name="label_gastos">Gastos T. Crédito:</string>
     <string name="default_fecha">dd/mm/aa</string>
+    <string name="detalle">Detalle</string>
+    <string name="no_tiene_datos_cargados">No tiene datos cargados.</string>
+    <string name="volver">Volver</string>
     <string-array name="conceptos_ingresos">
         <item>Sueldo</item>
         <item>Prestamo</item>

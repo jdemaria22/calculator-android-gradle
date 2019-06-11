@@ -1,5 +1,6 @@
 package com.example.aed3;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             actualizar_fecha();
             mDatabaseHelper = new DatabaseHelper(this);
             actualizarSaldo();
-            Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+            Toolbar t = findViewById(R.id.toolbar);
             controlador.agregarBtnBack(t, getApplicationContext(),R.layout.activity_main);
 
         }   catch (Exception e) {
@@ -58,16 +59,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Actualiza el saldo en la pantalla Inicio.
      */
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @RequiresApi(api = VERSION_CODES.O)
     public void actualizarSaldo(){
         try {
-            Double egreso = new Double(calculos.totalEgresosDelMes(mDatabaseHelper));
-            Double ingreso = new Double(calculos.totalIngresosDelMes(mDatabaseHelper));
-            Double total = new Double(0.00);
-            total = ingreso - egreso;
+            Double egreso = calculos.totalEgresosDelMes(mDatabaseHelper);
+            Double ingreso = calculos.totalIngresosDelMes(mDatabaseHelper);
+            Double total = ingreso - egreso;
             float d = total.floatValue();
             String str = String.format("%.02f", d);
-            total = new Double(str);
+            total = Double.valueOf(str);
             TextView saldo = findViewById(R.id.saldo_actual);
             int redC = Color.parseColor("#FF0000");
             int greenC = Color.parseColor("#FF01DF01");//FFE981
@@ -113,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = VERSION_CODES.O)
     public void cargarIngreso(View view) {
         try{
-            EditText monto = (EditText)findViewById(R.id.editText2);
-            Spinner concepto = (Spinner) findViewById(R.id.lista_conceptos);
-            TextView fecha = (TextView) findViewById(R.id.fecha_selected);
+            EditText monto = findViewById(R.id.editText2);
+            Spinner concepto = findViewById(R.id.lista_conceptos);
+            TextView fecha = findViewById(R.id.fecha_selected);
             if (validarInput(monto.getText().toString(),"Monto")
               & validarInput(concepto.getSelectedItem().toString(), "Concepto")
               & validarInput(fecha.getText().toString(), "Fecha")) {
@@ -138,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = VERSION_CODES.O)
     public void cargarEgreso(View view) {
         try {
-            EditText monto = (EditText)findViewById(R.id.editText2Egreso);
-            Spinner concepto = (Spinner) findViewById(R.id.conceptosEgreso);
-            TextView fecha = (TextView) findViewById(R.id.fecha_selectedEgreso);
-            Spinner categoria = (Spinner) findViewById(R.id.categoriasEgresos);
+            EditText monto = findViewById(R.id.editText2Egreso);
+            Spinner concepto = findViewById(R.id.conceptosEgreso);
+            TextView fecha = findViewById(R.id.fecha_selectedEgreso);
+            Spinner categoria = findViewById(R.id.categoriasEgresos);
 
             if (validarInput(monto.getText().toString(),"Monto")
                     & validarInput(concepto.getSelectedItem().toString(), "Concepto")
@@ -167,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean validarInput(String input, String tipo) {
         try {
             if (tipo.equals("Fecha")) {
-                if (input == null | input.length() == 0 | input.equals("dd/mm/aa")) {
+                assert input != null;
+                if ((input.length() == 0) | input.equals("dd/mm/aa")) {
                     Toast toast1 =
                             Toast.makeText(getApplicationContext(),
                                     "Debe ingresar " + tipo, Toast.LENGTH_SHORT);
@@ -177,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             }else {
-                if (input == null | input.length() == 0) {
+                assert input != null;
+                if (input.length() == 0) {
                     Toast toast1 =
                             Toast.makeText(getApplicationContext(),
                                     "Debe ingresar " + tipo, Toast.LENGTH_SHORT);
@@ -200,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
      * Redirige hacia la pantalla Detalle y dibuja la tabla dinamica con los movimientos.
      * @param view
      */
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @RequiresApi(api = VERSION_CODES.O)
     public void mostrarDetalle(View view) {
         try {
@@ -213,27 +217,19 @@ public class MainActivity extends AppCompatActivity {
             long cantidad = mDatabaseHelper.getProfilesCount();
             Cursor fila = mDatabaseHelper.getData();
             setContentView(R.layout.detalle);
-            Toolbar t = (Toolbar) findViewById(R.id.toolbarD);
+            Toolbar t = findViewById(R.id.toolbarD);
             controlador.agregarBtnBack(t,getApplicationContext(),R.layout.detalle);
-            LinearLayout linea = findViewById(R.id.linea_detalle);
-
-            TableLayout ll = (TableLayout) findViewById(R.id.table_detalle_header);
-            //fecha
+            TableLayout ll = findViewById(R.id.table_detalle_header);
             TableRow.LayoutParams lt = new TableRow.LayoutParams(280,200);
             lt.setMargins(1,1,1,1);
-            //tipo
             TableRow.LayoutParams lttipo = new TableRow.LayoutParams(380,200);
             lttipo.setMargins(1,1,1,1);
-            //Monto
             TableRow.LayoutParams ltmonto = new TableRow.LayoutParams(300,200);
             ltmonto.setMargins(1,1,1,1);
-            //
-
             TableRow row = new TableRow(this);
             row.setBackgroundColor(negroC);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
-            //Creo los TextView
             TextView tdate = new TextView(this);
             tdate.setLayoutParams(lt);
             tdate.setBackgroundColor(grisC);
@@ -246,18 +242,15 @@ public class MainActivity extends AppCompatActivity {
             tmonto.setLayoutParams(ltmonto);
             tmonto.setBackgroundColor(grisC);
             tmonto.setTextSize(22);
-            //Texto centrado
             tdate.setGravity(Gravity.CENTER);
             tmonto.setGravity(Gravity.CENTER);
             ttipo.setGravity(Gravity.CENTER);
-            //Cambios en titulos
             tdate.setText("Fecha");
             tdate.setPadding(0,40,0,40);
             ttipo.setText("Tipo");
             ttipo.setPadding(50,40,50,40);
             tmonto.setText("Monto");
             tmonto.setPadding(5,40,5,40);
-            //Estilo de los titulos
             tdate.setTypeface(null, Typeface.BOLD);
             ttipo.setTypeface(null, Typeface.BOLD);
             tmonto.setTypeface(null, Typeface.BOLD);
@@ -268,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             ll.addView(row,0);
 
             if (cantidad < 1) {
-                LinearLayout lnt = findViewById(R.id.linea_detalle);
+                @SuppressLint("CutPasteId") LinearLayout lnt = findViewById(R.id.linea_detalle);
                 lnt.setBackgroundColor(blancoC);
                 TextView nt = findViewById(R.id.txtv_nt);
                 nt.setVisibility(View.VISIBLE);
@@ -278,11 +271,11 @@ public class MainActivity extends AppCompatActivity {
                 nt.setVisibility(View.GONE);
             }
 
-            TableLayout lll = (TableLayout) findViewById(R.id.table_detalle);
+            TableLayout lll = findViewById(R.id.table_detalle);
 
-            for (int i = 0; i < cantidad; i++) {
+            for (int i = 0; i < cantidad; i++)
                 if (fila.moveToNext()) {
-                    row= new TableRow(this);
+                    row = new TableRow(this);
                     row.setBackgroundColor(negroC);
                     lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     row.setLayoutParams(lp);
@@ -300,32 +293,23 @@ public class MainActivity extends AppCompatActivity {
                     tmonto.setTextSize(16);
                     if (fila.getInt(5) == 2) {
                         tmonto.setTextColor(redC);
-                    }
-                    else{
-                        tmonto.setTextColor(greenC);
-                    };
-                    //Cargo las filas
+                    } else tmonto.setTextColor(greenC);
+
                     tdate.setText(fila.getString(4));
                     ttipo.setText(fila.getString(2));
-                    Double monto = new Double(fila.getDouble(1));
-                    tmonto.setText("$ " + String.format("%.02f",monto));
-                    //Seteo padding dinamicos
-
-                    tdate.setPadding(0,0,0,0);
-                    ttipo.setPadding(0,0,0,0);
-                    tmonto.setPadding(0,0,0,0);
-
-                    //Texto centrado
+                    Double monto = fila.getDouble(1);
+                    tmonto.setText("$ " + String.format("%.02f", monto));
+                    tdate.setPadding(0, 0, 0, 0);
+                    ttipo.setPadding(0, 0, 0, 0);
+                    tmonto.setPadding(0, 0, 0, 0);
                     tdate.setGravity(Gravity.CENTER);
                     tmonto.setGravity(Gravity.CENTER);
                     ttipo.setGravity(Gravity.CENTER);
-                    //ttipo.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     row.addView(tdate);
                     row.addView(ttipo);
                     row.addView(tmonto);
-                    lll.addView(row,i);
+                    lll.addView(row, i);
                 }
-            }
             mDatabaseHelper.close();
             tablaEgresos();
         }catch (Exception e ) {
@@ -339,17 +323,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Dibuja en la pantalla Detalle la tabla con los totales de egresos de cada Categoria
      */
+    @SuppressLint("SetTextI18n")
     public void tablaEgresos() {
         try {
-            TableLayout le = (TableLayout) findViewById(R.id.table_egresos);
+            TableLayout le = findViewById(R.id.table_egresos);
             TableRow row = new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
             int negroC = Color.parseColor("#000000");
             row.setBackgroundColor(negroC);
-            TableRow.LayoutParams lt = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT);
+            TableRow.LayoutParams lt = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             lt.setMargins(0,1,0,1);
-            //Creo el TextView Mercados
             TextView mercados = new TextView(this);
             int blankC = Color.parseColor("#FFFFFF");
             mercados.setBackgroundColor(blankC);
@@ -359,19 +343,17 @@ public class MainActivity extends AppCompatActivity {
             mercados.setGravity(Gravity.START);
             mercados.setPadding(60,30,40,35);
             mercados.setTypeface(null, Typeface.BOLD);
-            //
             TextView vmercados = new TextView(this);
             vmercados.setBackgroundColor(blankC);
             vmercados.setLayoutParams(lt);
             vmercados.setGravity(Gravity.CENTER);
             vmercados.setTextSize(18);
             vmercados.setPadding(300,30,250,35);
-            String smercados = String.format("%.02f",calculos.obtenerEgresoMercado(mDatabaseHelper,getApplicationContext()));
+            @SuppressLint("DefaultLocale") String smercados = String.format("%.02f",calculos.obtenerEgresoMercado(mDatabaseHelper,getApplicationContext()));
             vmercados.setText("$ " + smercados);
             row.addView(mercados);
             row.addView(vmercados);
             le.addView(row,0);
-            //Creo el TextView Alquiler
             TableRow row1 = new TableRow(this);
             row1.setBackgroundColor(negroC);
             row1.setLayoutParams(lp);
@@ -390,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
             valquiler.setGravity(Gravity.CENTER);
             valquiler.setPadding(300,30,250,35);
             valquiler.setTextSize(18);
-            String salquiler = String.format("%.02f",calculos.obtenerEgresoAlquier(mDatabaseHelper,getApplicationContext()));
+            @SuppressLint("DefaultLocale") String salquiler = String.format("%.02f",calculos.obtenerEgresoAlquier(mDatabaseHelper,getApplicationContext()));
             valquiler.setText("$ " + salquiler);
             row1.addView(alquiler);
             row1.addView(valquiler);
@@ -414,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
             vtransporte.setGravity(Gravity.CENTER);
             vtransporte.setPadding(300,30,250,35);
             vtransporte.setTextSize(18);
-            String stransporte = String.format("%.02f",calculos.obtenerEgresoTransporte(mDatabaseHelper,getApplicationContext()));
+            @SuppressLint("DefaultLocale") String stransporte = String.format("%.02f",calculos.obtenerEgresoTransporte(mDatabaseHelper,getApplicationContext()));
             vtransporte.setText("$ " + stransporte);
             row2.addView(transporte);
             row2.addView(vtransporte);
@@ -438,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
             vimpuestos.setGravity(Gravity.CENTER);
             vimpuestos.setPadding(300,30,250,35);
             vimpuestos.setTextSize(18);
-            String simpuestos = String.format("%.02f",calculos.obtenerEgresoImpuestos(mDatabaseHelper,getApplicationContext()));
+            @SuppressLint("DefaultLocale") String simpuestos = String.format("%.02f",calculos.obtenerEgresoImpuestos(mDatabaseHelper,getApplicationContext()));
             vimpuestos.setText("$ " + simpuestos);
             row3.addView(impuestos);
             row3.addView(vimpuestos);
@@ -462,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
             votros.setPadding(300,30,250,35);
             votros.setGravity(Gravity.CENTER);
             votros.setTextSize(18);
-            String sotros = String.format("%.02f", calculos.obtenerEgresoOtros(mDatabaseHelper,getApplicationContext()));
+            @SuppressLint("DefaultLocale") String sotros = String.format("%.02f", calculos.obtenerEgresoOtros(mDatabaseHelper,getApplicationContext()));
             votros.setText("$ " + sotros);
             row4.addView(otros);
             row4.addView(votros);
@@ -479,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
      * Actualiza la fecha actual en la pantalla Inicio.
      */
     public void actualizar_fecha() {
-        TextView fecha = (TextView) findViewById(R.id.fecha_id);
+        TextView fecha = findViewById(R.id.fecha_id);
         controlador.actualizar_fecha(fecha ,getApplicationContext());
     }
 
@@ -488,8 +470,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void cargarCalendario() {
         try {
-            mTv = (TextView)findViewById(R.id.fecha_selected);
-            mBtn = (Button)findViewById(R.id.agregar_fecha);
+            mTv = findViewById(R.id.fecha_selected);
+            mBtn = findViewById(R.id.agregar_fecha);
 
             mBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -499,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
                     int mes = cal.get(Calendar.MONTH);
                     int año = cal.get(Calendar.YEAR);
                     dat = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             mTv.setText(dayOfMonth + "/" + (month + 1) + "/" + year );
@@ -521,8 +504,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void cargarCalendarioEgreso() {
         try {
-            mTv = (TextView)findViewById(R.id.fecha_selectedEgreso);
-            mBtn = (Button)findViewById(R.id.agregar_fechaEgreso);
+            mTv = findViewById(R.id.fecha_selectedEgreso);
+            mBtn = findViewById(R.id.agregar_fechaEgreso);
 
             mBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -533,6 +516,7 @@ public class MainActivity extends AppCompatActivity {
                     int año = cal.get(Calendar.YEAR);
 
                     dat = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             mTv.setText(dayOfMonth + "/" + (month + 1) + "/" + year );
@@ -555,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void nuevoIngreso(View view) {
         setContentView(R.layout.ingreso);
-        Toolbar t = (Toolbar) findViewById(R.id.toolbarI);
+        Toolbar t = findViewById(R.id.toolbarI);
         this.findViewById(android.R.id.content);
         controlador.agregarBtnBack(t,getApplicationContext(),R.layout.ingreso);
         cargarCalendario();
@@ -567,7 +551,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void nuevoEgreso(View view) {
         setContentView(R.layout.egreso);
-        Toolbar t = (Toolbar) findViewById(R.id.toolbarE);
+        Toolbar t = findViewById(R.id.toolbarE);
         controlador.agregarBtnBack(t,getApplicationContext(),R.layout.egreso);
         cargarCalendarioEgreso();
     }
@@ -586,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = VERSION_CODES.O)
     public void inicio() {
         setContentView(R.layout.activity_main);
-        Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar t = findViewById(R.id.toolbar);
         controlador.agregarBtnBack(t,getApplicationContext(),R.layout.activity_main);
         actualizar_fecha();
         actualizarSaldo();

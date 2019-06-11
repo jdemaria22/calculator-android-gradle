@@ -1,9 +1,8 @@
 package com.example.aed3;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
@@ -12,20 +11,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import android.app.Application;
-public class Controlador {
-    public Calendar cal;
-    public DatePickerDialog dat;
-    public String fecha_actual;
-    public static String formato;
-    public MainActivity appCompatActivity;
+
+class Controlador {
+    private String fecha_actual;
+    private static String formato;
+    private MainActivity appCompatActivity;
     /**
      * Instancio controlador
      */
-    public Controlador(MainActivity appCompatActivity) {
+    Controlador(MainActivity appCompatActivity) {
         fecha_actual = "";
         formato = "EEEE dd MMMM yyyy";
         this.appCompatActivity = appCompatActivity;
@@ -35,12 +31,11 @@ public class Controlador {
      * Agrega boton back en los toolbar.
      * @param toolbar
      */
-    public void agregarBtnBack(final Toolbar toolbar, final Context context, final int id) {
+    void agregarBtnBack(final Toolbar toolbar, final Context context, final int id) {
         int blankC = Color.parseColor("#FFFFFF");
-        Toolbar t = toolbar;
-        t.setTitleTextColor(blankC);
-        t.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        t.setOnClickListener(new View.OnClickListener() {
+        toolbar.setTitleTextColor(blankC);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
@@ -64,7 +59,7 @@ public class Controlador {
      * @param mDatabaseHelper
      * @param context
      */
-    public void AddData(String monto, String concepto, String categoria, String fecha, int tipo, DatabaseHelper mDatabaseHelper, Context context) {
+    void AddData(String monto, String concepto, String categoria, String fecha, int tipo, DatabaseHelper mDatabaseHelper, Context context) {
         try {
             boolean insertData = mDatabaseHelper.addData(monto, concepto, categoria, fecha, tipo);
 
@@ -84,7 +79,7 @@ public class Controlador {
     /**
      * Actualiza la fecha actual en la pantalla Inicio.
      */
-    public void actualizar_fecha(TextView fecha, Context context) {
+    void actualizar_fecha(TextView fecha, Context context) {
         try {
             Locale locale = new Locale("es", "AR");
             DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(locale);
@@ -98,10 +93,9 @@ public class Controlador {
                     "Viernes",
                     "Sabado",
             });
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formato,dateFormatSymbols);
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formato,dateFormatSymbols);
             fecha_actual = simpleDateFormat.format(new Date());
-            final TextView textViewToChange = fecha;
-            textViewToChange.setText(fecha_actual);
+            fecha.setText(fecha_actual);
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(context,

@@ -84,15 +84,15 @@
         android:textAllCaps="false"
         android:textColor="#FFFFFF"/>
 
-        <TextView
-            android:id="@+id/fecha_selected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
-            android:text="@string/default_fecha"
-            />
+    <TextView
+        android:id="@+id/fecha_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:text="@string/default_fecha"
+        />
     <Button
         android:id="@+id/aceptar"
         android:layout_width="match_parent"
