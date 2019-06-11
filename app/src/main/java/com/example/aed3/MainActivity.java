@@ -8,7 +8,6 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -21,16 +20,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public TextView mTv;
     public Button mBtn;
-    public Controlador controlador = new Controlador();
+    public Controlador controlador = new Controlador(this);
     public Calculos calculos = new Calculos();
     DatabaseHelper mDatabaseHelper;
     Calendar cal;
@@ -50,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
             mDatabaseHelper = new DatabaseHelper(this);
             actualizarSaldo();
             Toolbar t = (Toolbar) findViewById(R.id.toolbar);
-            controlador.agregarBtnBack(t);
+            controlador.agregarBtnBack(t, getApplicationContext(),R.layout.activity_main);
+
         }   catch (Exception e) {
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
@@ -124,9 +120,7 @@ public class MainActivity extends AppCompatActivity {
               & validarInput(concepto.getSelectedItem().toString(), "Concepto")
               & validarInput(fecha.getText().toString(), "Fecha")) {
                 controlador.AddData(monto.getText().toString() , concepto.getSelectedItem().toString(), "", fecha.getText().toString(), 1, mDatabaseHelper, getApplicationContext());
-                setContentView(R.layout.activity_main);
-                actualizar_fecha();
-                actualizarSaldo();
+                inicio();
             }
         }catch (Exception e){
             Toast toast1 =
@@ -154,9 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     & validarInput(fecha.getText().toString(), "Fecha")
                     & validarInput(categoria.getSelectedItem().toString(),"Categoria")) {
                 controlador.AddData(monto.getText().toString(), concepto.getSelectedItem().toString(), categoria.getSelectedItem().toString(), fecha.getText().toString(),2,mDatabaseHelper,getApplicationContext());
-                setContentView(R.layout.activity_main);
-                actualizar_fecha();
-                actualizarSaldo();
+                inicio();
             }
         }catch (Exception e){
             Toast toast1 =
@@ -221,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
             long cantidad = mDatabaseHelper.getProfilesCount();
             Cursor fila = mDatabaseHelper.getData();
             setContentView(R.layout.detalle);
+            Toolbar t = (Toolbar) findViewById(R.id.toolbarD);
+            controlador.agregarBtnBack(t,getApplicationContext(),R.layout.detalle);
             LinearLayout linea = findViewById(R.id.linea_detalle);
 
             TableLayout ll = (TableLayout) findViewById(R.id.table_detalle_header);
@@ -561,6 +555,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void nuevoIngreso(View view) {
         setContentView(R.layout.ingreso);
+        Toolbar t = (Toolbar) findViewById(R.id.toolbarI);
+        this.findViewById(android.R.id.content);
+        controlador.agregarBtnBack(t,getApplicationContext(),R.layout.ingreso);
         cargarCalendario();
     }
 
@@ -570,16 +567,27 @@ public class MainActivity extends AppCompatActivity {
      */
     public void nuevoEgreso(View view) {
         setContentView(R.layout.egreso);
+        Toolbar t = (Toolbar) findViewById(R.id.toolbarE);
+        controlador.agregarBtnBack(t,getApplicationContext(),R.layout.egreso);
         cargarCalendarioEgreso();
     }
 
     /**
-     * Vuelve al la pantalla del inicio.
-     * @param view
+     * Vuelve al la pantalla del inicio desde el detalle.
      */
     @RequiresApi(api = VERSION_CODES.O)
     public void Inicio(View view) {
+        inicio();
+    }
+
+    /**
+     * vuelve a la pantalla inicio.
+     */
+    @RequiresApi(api = VERSION_CODES.O)
+    public void inicio() {
         setContentView(R.layout.activity_main);
+        Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+        controlador.agregarBtnBack(t,getApplicationContext(),R.layout.activity_main);
         actualizar_fecha();
         actualizarSaldo();
     }

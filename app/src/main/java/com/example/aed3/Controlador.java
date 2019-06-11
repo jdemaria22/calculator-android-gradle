@@ -1,44 +1,57 @@
 package com.example.aed3;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import android.app.Application;
 public class Controlador {
     public Calendar cal;
     public DatePickerDialog dat;
     public String fecha_actual;
     public static String formato;
-
+    public MainActivity appCompatActivity;
     /**
      * Instancio controlador
      */
-    public Controlador() {
+    public Controlador(MainActivity appCompatActivity) {
         fecha_actual = "";
         formato = "EEEE dd MMMM yyyy";
+        this.appCompatActivity = appCompatActivity;
     }
 
     /**
      * Agrega boton back en los toolbar.
      * @param toolbar
      */
-    public void agregarBtnBack(Toolbar toolbar) {
+    public void agregarBtnBack(final Toolbar toolbar, final Context context, final int id) {
         int blankC = Color.parseColor("#FFFFFF");
         Toolbar t = toolbar;
         t.setTitleTextColor(blankC);
         t.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        t.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                String res = context.getResources().getResourceName(id);
+                String nameLayout = res.substring(res.indexOf("/") + 1);
+                if (nameLayout.equals("activity_main")) {
+                    System.exit(0);
+                }
+                else {appCompatActivity.inicio();}
+            }
+        });
     }
 
     /**
