@@ -1,6 +1,7 @@
 package com.example.aed3;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -9,8 +10,12 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }   catch (Exception e) {
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString() , Toast.LENGTH_LONG);
+                            "Error en onCreate" + e.toString() , Toast.LENGTH_LONG);
             toast1.show();
         }
     }
@@ -65,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             Double egreso = calculos.totalEgresosDelMes(mDatabaseHelper);
             Double ingreso = calculos.totalIngresosDelMes(mDatabaseHelper);
-            Double total = ingreso - egreso;
+            Double total = new Double(0.00);
+            total = ingreso - egreso;
             float d = total.floatValue();
             String str = String.format("%.02f", d);
-            total = Double.valueOf(str);
+            total = new Double(str.replace(",", "."));
             TextView saldo = findViewById(R.id.saldo_actual);
             int redC = Color.parseColor("#FF0000");
             int greenC = Color.parseColor("#FF01DF01");//FFE981
@@ -101,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString() , Toast.LENGTH_LONG);
+                            "Error en actualizarSaldo" + e.toString() , Toast.LENGTH_LONG);
             toast1.show();
         }
 
@@ -118,15 +124,15 @@ public class MainActivity extends AppCompatActivity {
             Spinner concepto = findViewById(R.id.lista_conceptos);
             TextView fecha = findViewById(R.id.fecha_selected);
             if (validarInput(monto.getText().toString(),"Monto")
-              & validarInput(concepto.getSelectedItem().toString(), "Concepto")
-              & validarInput(fecha.getText().toString(), "Fecha")) {
+                    & validarInput(concepto.getSelectedItem().toString(), "Concepto")
+                    & validarInput(fecha.getText().toString(), "Fecha")) {
                 controlador.AddData(monto.getText().toString() , concepto.getSelectedItem().toString(), "", fecha.getText().toString(), 1, mDatabaseHelper, getApplicationContext());
                 inicio();
             }
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString() , Toast.LENGTH_LONG);
+                            "Error en cargarIngreso" + e.toString() , Toast.LENGTH_LONG);
             toast1.show();
         }
 
@@ -154,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString() , Toast.LENGTH_LONG);
+                            "Error en cargarEgreso" + e.toString() , Toast.LENGTH_LONG);
             toast1.show();
         }
     }
@@ -193,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
+                            "Error en validarInput" +e.toString(), Toast.LENGTH_LONG);
             toast1.show();
             return false;
         }
@@ -208,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
     public void mostrarDetalle(View view) {
         try {
             //Cargo database
+
             mDatabaseHelper.getReadableDatabase();
             int negroC = Color.parseColor("#000000");
             int blancoC = Color.parseColor("#FFFFFF");
@@ -220,11 +227,18 @@ public class MainActivity extends AppCompatActivity {
             Toolbar t = findViewById(R.id.toolbarD);
             controlador.agregarBtnBack(t,getApplicationContext(),R.layout.detalle);
             TableLayout ll = findViewById(R.id.table_detalle_header);
-            TableRow.LayoutParams lt = new TableRow.LayoutParams(280,200);
+            //////
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int lff = (int) ((displayMetrics.widthPixels - 40) * 0.30);
+            int lmm = (int) ((displayMetrics.widthPixels - 40) * 0.30);
+            int ltt = (int) ((displayMetrics.widthPixels - 40) * 0.35);
+            TableRow.LayoutParams lt = new TableRow.LayoutParams(lff ,200);
             lt.setMargins(1,1,1,1);
-            TableRow.LayoutParams lttipo = new TableRow.LayoutParams(380,200);
+            TableRow.LayoutParams lttipo = new TableRow.LayoutParams(lmm,200);
             lttipo.setMargins(1,1,1,1);
-            TableRow.LayoutParams ltmonto = new TableRow.LayoutParams(300,200);
+            LinearLayout lnt1 = findViewById(R.id.linea_detalle);
+            TableRow.LayoutParams ltmonto = new TableRow.LayoutParams(ltt,200);
             ltmonto.setMargins(1,1,1,1);
             TableRow row = new TableRow(this);
             row.setBackgroundColor(negroC);
@@ -315,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e ) {
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
+                            "Error en mostrarDetalle" +  e.toString(), Toast.LENGTH_LONG);
             toast1.show();
         }
     }
@@ -326,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void tablaEgresos() {
         try {
+
             TableLayout le = findViewById(R.id.table_egresos);
             TableRow row = new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
@@ -333,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
             int negroC = Color.parseColor("#000000");
             row.setBackgroundColor(negroC);
             TableRow.LayoutParams lt = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            float spTextSize = 6;
+            float textSize = spTextSize * getResources().getDisplayMetrics().scaledDensity;
             lt.setMargins(0,1,0,1);
             TextView mercados = new TextView(this);
             int blankC = Color.parseColor("#FFFFFF");
@@ -452,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
+                            "Error en tablaEgresos" + e.toString(), Toast.LENGTH_LONG);
             toast1.show();
         }
     }
@@ -493,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
+                            "Error en cargarCalendario" +  e.toString(), Toast.LENGTH_LONG);
             toast1.show();
         }
 
@@ -528,7 +545,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast toast1 =
                     Toast.makeText(getApplicationContext(),
-                            e.toString(), Toast.LENGTH_LONG);
+                            "Error en cargarCalendarioEgreso" + e.toString(), Toast.LENGTH_LONG);
             toast1.show();
         }
     }
